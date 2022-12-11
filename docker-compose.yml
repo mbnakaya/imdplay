@@ -1,0 +1,14 @@
+version: "3.3"
+services:
+  mysql:
+    container_name: mysql-imdplay
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: 'imdplay-db'
+      MYSQL_USER: 'test'
+      MYSQL_PASSWORD: 'test'
+      MYSQL_ROOT_PASSWORD: 'test'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
