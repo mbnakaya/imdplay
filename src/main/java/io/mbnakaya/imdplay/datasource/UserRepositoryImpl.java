@@ -1,5 +1,6 @@
 package io.mbnakaya.imdplay.datasource;
 
+import io.mbnakaya.imdplay.datasource.jpa.UserRepositoryJpa;
 import io.mbnakaya.imdplay.datasource.po.UserPO;
 import io.mbnakaya.imdplay.datasource.port.UserRepository;
 import io.mbnakaya.imdplay.domain.User;

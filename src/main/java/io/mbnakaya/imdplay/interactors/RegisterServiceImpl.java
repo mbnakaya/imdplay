@@ -1,6 +1,5 @@
 package io.mbnakaya.imdplay.interactors;
 
-import io.mbnakaya.imdplay.datasource.UserRepositoryJpa;
 import io.mbnakaya.imdplay.datasource.port.UserRepository;
 import io.mbnakaya.imdplay.domain.User;
 import io.mbnakaya.imdplay.interactors.port.RegisterService;

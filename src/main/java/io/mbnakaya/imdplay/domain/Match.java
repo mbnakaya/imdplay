@@ -3,6 +3,7 @@ package io.mbnakaya.imdplay.domain;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,7 +17,9 @@ public class Match {
     private Movie movieB;
     private Integer points;
     private String result;
-    private List<Long> answered;
+    private List<String> answered;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public static Match generateNewOne(User user) {
         return Match.builder()

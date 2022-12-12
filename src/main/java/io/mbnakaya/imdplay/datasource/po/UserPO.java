@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -38,6 +39,8 @@ public class UserPO {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    @OneToMany
+    private List<MatchPO> matches;
 
     public static UserPO toPO(User user) {
         return UserPO.builder()

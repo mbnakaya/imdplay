@@ -7,9 +7,10 @@ import lombok.Data;
 @Builder
 public class Movie {
     private Long id;
-    private String name;
-    private String gender;
+    private String tittle;
+    private String genre;
     private Integer year;
+    private String director;
     private String rated;
     private Double imdbRating;
     private Integer votes;

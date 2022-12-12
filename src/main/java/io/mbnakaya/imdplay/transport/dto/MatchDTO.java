@@ -1,9 +1,12 @@
 package io.mbnakaya.imdplay.transport.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.mbnakaya.imdplay.domain.Match;
 import io.mbnakaya.imdplay.domain.Movie;
 import lombok.Builder;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -11,10 +14,14 @@ public class MatchDTO {
     private Long id;
     private ResponseUserDTO user;
     private Integer chances;
-    private Movie movieA;
-    private Movie movieB;
+    private MovieDTO movieA;
+    private MovieDTO movieB;
     private Integer points;
     private String result;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private LocalDateTime createdAt;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private LocalDateTime updatedAt;
 
     public static MatchDTO fromDomain(Match match) {
         return MatchDTO.builder()
@@ -27,10 +34,12 @@ public class MatchDTO {
                         .score(match.getUser().getScore())
                         .build())
                 .chances(match.getChances())
-                .movieA(match.getMovieA())
-                .movieB(match.getMovieB())
+                .movieA(MovieDTO.fromDomain(match.getMovieA()))
+                .movieB(MovieDTO.fromDomain(match.getMovieB()))
                 .points(match.getPoints())
                 .result(match.getResult())
+                .createdAt(match.getCreatedAt())
+                .updatedAt(match.getUpdatedAt())
                 .build();
     }
 }

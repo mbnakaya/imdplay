@@ -1,4 +1,4 @@
-package io.mbnakaya.imdplay.datasource;
+package io.mbnakaya.imdplay.datasource.jpa;
 
 import io.mbnakaya.imdplay.datasource.po.UserPO;
 import org.springframework.data.jpa.repository.JpaRepository;
