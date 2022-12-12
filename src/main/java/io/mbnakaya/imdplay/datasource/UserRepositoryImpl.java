@@ -4,6 +4,7 @@ import io.mbnakaya.imdplay.datasource.jpa.UserRepositoryJpa;
 import io.mbnakaya.imdplay.datasource.po.UserPO;
 import io.mbnakaya.imdplay.datasource.port.UserRepository;
 import io.mbnakaya.imdplay.domain.User;
+import io.mbnakaya.imdplay.domain.exceptions.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,17 @@ public class UserRepositoryImpl implements UserRepository {
         return repositoryJpa
                 .findByUserNameAndPassword(user.getUserName(), user.getPassword())
                 .toDomain();
+    }
+
+    @Override
+    public User login(String userName, String password) {
+        try {
+            return repositoryJpa
+                    .findByUserNameAndPassword(userName, password)
+                    .toDomain();
+        } catch (NullPointerException e) {
+            throw new UnauthorizedException();
+        }
     }
 
     @Override
