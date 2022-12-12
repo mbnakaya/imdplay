@@ -23,4 +23,11 @@ public class UserRepositoryImpl implements UserRepository {
                 .findByUserNameAndPassword(user.getUserName(), user.getPassword())
                 .toDomain();
     }
+
+    @Override
+    public User findByUserName(String userName) {
+        return repositoryJpa
+                .findByUserName(userName)
+                .toDomain();
+    }
 }
