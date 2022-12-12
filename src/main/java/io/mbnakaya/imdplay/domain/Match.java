@@ -17,6 +17,7 @@ public class Match {
     private Movie movieB;
     private Integer points;
     private String result;
+    private MatchStatus status;
     private List<String> answered;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -27,6 +28,7 @@ public class Match {
                 .chances(3)
                 .points(0)
                 .result("")
+                .status(MatchStatus.CREATED)
                 .answered(Collections.emptyList())
                 .build();
     }

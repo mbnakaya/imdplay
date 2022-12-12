@@ -1,6 +1,9 @@
 package io.mbnakaya.imdplay.datasource.po;
 
 import io.mbnakaya.imdplay.domain.Match;
+import io.mbnakaya.imdplay.domain.MatchStatus;
+import io.mbnakaya.imdplay.domain.Movie;
+import io.mbnakaya.imdplay.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +13,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -26,14 +32,17 @@ public class MatchPO {
     private UserPO user;
     @Column(nullable = false)
     private Integer chances;
-    @Column(name = "movie_a", nullable = false)
+    @Column(name = "movie_a")
     private Long movieA;
-    @Column(name = "movie_b",nullable = false)
+    @Column(name = "movie_b")
     private Long movieB;
     @Column(nullable = false)
     private Integer points;
     @Column(nullable = false)
     private String result;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MatchStatus status;
     @Column(nullable = false)
     private String answered;
     @CreationTimestamp
@@ -59,7 +68,37 @@ public class MatchPO {
                 .movieB(match.getMovieB().getId())
                 .points(match.getPoints())
                 .result(match.getResult())
+                .status(match.getStatus())
                 .answered(String.join(",", match.getAnswered()))
+                .build();
+    }
+
+    public static List<Match> toDomainList(List<MatchPO> matches) {
+        return matches.stream().map(MatchPO::toDomain).collect(Collectors.toList());
+    }
+
+    public Match toDomain() {
+        return Match.builder()
+                .id(this.getId())
+                .user(User.builder()
+                        .id(this.getUser().getId())
+                        .fullName(this.getUser().getFullName())
+                        .userName(this.getUser().getUserName())
+                        .email(this.getUser().getEmail())
+                        .password(this.getUser().getPassword())
+                        .score(this.getUser().getScore())
+                        .build())
+                .chances(this.getChances())
+                .movieA(Movie.builder()
+                        .id(this.getMovieA())
+                        .build())
+                .movieB(Movie.builder()
+                        .id(this.getMovieB())
+                        .build())
+                .points(this.getPoints())
+                .result(this.getResult())
+                .status(this.status)
+                .answered(Arrays.asList(this.getAnswered()))
                 .build();
     }
 }

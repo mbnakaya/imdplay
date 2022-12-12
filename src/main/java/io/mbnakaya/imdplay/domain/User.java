@@ -12,4 +12,8 @@ public class User {
     private String email;
     private String password;
     private Long score;
+
+    public void addScore(Long newScore) {
+        this.score += newScore;
+    }
 }

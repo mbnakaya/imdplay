@@ -1,7 +1,12 @@
 package io.mbnakaya.imdplay.datasource.port;
 
 import io.mbnakaya.imdplay.domain.Match;
+import io.mbnakaya.imdplay.domain.User;
+
+import java.util.List;
 
 public interface MatchRepository {
-    Long save(Match match);
+    Match save(Match match);
+    Match getById(Long id);
+    List<Match> listByUSer(User user);
 }
