@@ -4,18 +4,23 @@ import io.mbnakaya.imdplay.datasource.po.UserPO;
 import io.mbnakaya.imdplay.datasource.port.UserRepository;
 import io.mbnakaya.imdplay.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-@Repository
+@Component
 public class UserRepositoryImpl implements UserRepository {
-    private final UserRepositoryJpa repositoryJpa;
 
-    public UserRepositoryImpl(UserRepositoryJpa repositoryJpa) {
-        this.repositoryJpa = repositoryJpa;
-    }
+    @Autowired
+    private UserRepositoryJpa repositoryJpa;
 
     @Override
     public User save(User user) {
         return repositoryJpa.save(UserPO.toPO(user)).toDomain();
+    }
+
+    @Override
+    public User login(User user) {
+        return repositoryJpa
+                .findByUserNameAndPassword(user.getUserName(), user.getPassword())
+                .toDomain();
     }
 }

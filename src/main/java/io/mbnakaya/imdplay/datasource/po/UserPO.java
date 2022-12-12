@@ -22,13 +22,15 @@ public class UserPO {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "full_name")
+    @Column(name = "full_name", nullable = false)
     private String fullName;
-    @Column(name = "user_name")
+    @Column(name = "user_name", nullable = false, unique = true)
     private String userName;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private String password;
-    @Column(nullable = false, columnDefinition = "int default 0")
+    @Column(nullable = false)
     private Long score;
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

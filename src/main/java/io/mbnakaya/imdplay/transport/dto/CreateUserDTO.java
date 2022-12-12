@@ -16,6 +16,7 @@ public class CreateUserDTO {
                 .userName(this.getUsername())
                 .email(this.getEmail())
                 .password(this.getPassword())
+                .score(0L)
                 .build();
     }
 }
