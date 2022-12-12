@@ -5,12 +5,10 @@ import io.mbnakaya.imdplay.interactors.port.RegisterService;
 import io.mbnakaya.imdplay.transport.dto.CreateUserDTO;
 import io.mbnakaya.imdplay.transport.dto.ResponseUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/register")
@@ -26,5 +24,11 @@ public class RegisterController {
                 ResponseUserDTO.fromDomain(user),
                 HttpStatus.CREATED
         );
+    }
+
+    @GetMapping
+    public ResponseEntity<ResponseUserDTO> getUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authToken) {
+        User result = service.getUser(authToken);
+        return new ResponseEntity<>(ResponseUserDTO.fromDomain(result), HttpStatus.OK);
     }
 }
