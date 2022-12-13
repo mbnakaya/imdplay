@@ -1,5 +1,6 @@
 package io.mbnakaya.imdplay.transport.interceptors;
 
+import io.mbnakaya.imdplay.domain.exceptions.InvalidResultException;
 import io.mbnakaya.imdplay.domain.exceptions.UnauthorizedException;
 import io.mbnakaya.imdplay.transport.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -15,5 +16,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {UnauthorizedException.class})
     protected ResponseEntity<ErrorResponse> handleUnauthorizedException(RuntimeException ex, WebRequest req) {
         return new ResponseEntity<>(new ErrorResponse(ex.getMessage(), 401), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(value = {InvalidResultException.class})
+    protected ResponseEntity<ErrorResponse> handleInvalidResultException(RuntimeException ex, WebRequest req) {
+        return new ResponseEntity<>(new ErrorResponse(ex.getMessage(), 400), HttpStatus.BAD_REQUEST);
     }
 }

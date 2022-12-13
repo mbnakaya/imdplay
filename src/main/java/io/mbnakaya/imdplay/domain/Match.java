@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,5 +32,24 @@ public class Match {
                 .status(MatchStatus.CREATED)
                 .answered(Collections.emptyList())
                 .build();
+    }
+
+    public void reduceChance() {
+        this.chances -= 1;
+    }
+
+    public void addAnswered(Long id) {
+        List<String> list = new ArrayList<>(this.getAnswered());
+        list.add(id.toString());
+        this.setAnswered(list);
+    }
+
+    public void positiveResult() {
+        this.points += 1;
+        this.result += "O";
+    }
+
+    public void negativeResult() {
+        this.result += "X";
     }
 }

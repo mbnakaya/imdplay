@@ -3,16 +3,15 @@ package io.mbnakaya.imdplay.interactors;
 import io.mbnakaya.imdplay.datasource.port.MatchRepository;
 import io.mbnakaya.imdplay.datasource.port.MovieRepository;
 import io.mbnakaya.imdplay.datasource.port.UserRepository;
-import io.mbnakaya.imdplay.domain.Match;
-import io.mbnakaya.imdplay.domain.MatchStatus;
-import io.mbnakaya.imdplay.domain.Movie;
-import io.mbnakaya.imdplay.domain.User;
+import io.mbnakaya.imdplay.domain.*;
+import io.mbnakaya.imdplay.domain.exceptions.InvalidResultException;
 import io.mbnakaya.imdplay.domain.exceptions.MatchAlreadyFinishedException;
 import io.mbnakaya.imdplay.interactors.port.AuthenticationService;
 import io.mbnakaya.imdplay.interactors.port.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -38,7 +37,38 @@ public class MatchServiceImpl implements MatchService {
         newMatch.setMovieA(getMovieRandomly());
         newMatch.setMovieB(getMovieRandomlyExcept(newMatch.getMovieA().getId()));
 
+        List<String> answered = new ArrayList<>();
+        answered.add(newMatch.getMovieA().getId().toString());
+        answered.add(newMatch.getMovieB().getId().toString());
+
+        newMatch.setAnswered(answered);
+
         Match persistedMatch = matchRepository.save(newMatch);
+        return loadMovieData(persistedMatch);
+    }
+
+    @Override
+    public Match processResponse(Long matchId, Response response) {
+        Match match = matchRepository.getById(matchId);
+        if (match.getStatus().equals(MatchStatus.FINISHED)) throw new MatchAlreadyFinishedException();
+
+        List<String> answered = new ArrayList<>(match.getAnswered());
+        match = loadMovieData(match);
+
+        if (checkResponse(match, response)) {
+            match = nextRound(match, response);
+            match.positiveResult();
+        }
+        else {
+            match = nextRound(match, response);
+            match.reduceChance();
+            match.negativeResult();
+        }
+
+        if (match.getChances().equals(0)) return finishMatch(matchId);
+        match.setStatus(MatchStatus.IN_PROGRESS);
+
+        Match persistedMatch = matchRepository.save(match);
         return loadMovieData(persistedMatch);
     }
 
@@ -63,7 +93,8 @@ public class MatchServiceImpl implements MatchService {
     public List<Match> listMatches(String authToken) {
         String userName = authenticationService.getUserName(authToken);
         User user = userRepository.findByUserName(userName);
-        return matchRepository.listByUSer(user);
+        List<Match> matches = matchRepository.listByUSer(user);
+        return loadMovieData(matches);
     }
 
     private Movie getMovieRandomly() {
@@ -75,6 +106,15 @@ public class MatchServiceImpl implements MatchService {
         Long movieId = new Random().nextLong(0, movieRepository.getMovieListSize());
 
         while (excluded.equals(movieId)) {
+            movieId = new Random().nextLong(0, movieRepository.getMovieListSize());
+        }
+        return movieRepository.getById(movieId);
+    }
+
+    private Movie getMovieRandomlyExcept(List<String> excluded) {
+        Long movieId = new Random().nextLong(0, movieRepository.getMovieListSize());
+
+        while (excluded.contains(movieId.toString())) {
             movieId = new Random().nextLong(0, movieRepository.getMovieListSize());
         }
         return movieRepository.getById(movieId);
@@ -99,5 +139,35 @@ public class MatchServiceImpl implements MatchService {
         });
 
         return matches;
+    }
+
+    private Boolean checkResponse(Match match, Response response) {
+        Double movieA = (match.getMovieA().getImdbRating()) * (match.getMovieA().getVotes());
+        Double movieB = (match.getMovieB().getImdbRating()) * (match.getMovieB().getVotes());
+        Boolean result;
+
+        switch (response) {
+            case A -> result = movieA > movieB;
+            case B -> result = movieB > movieA;
+            default -> result = false;
+        }
+        return result;
+    }
+
+    private Match nextRound(Match match, Response response) {
+        switch (response) {
+            case A -> {
+                Movie newMovie = getMovieRandomlyExcept(match.getAnswered());
+                match.setMovieB(newMovie);
+                match.addAnswered(newMovie.getId());
+            }
+            case B -> {
+                Movie newMovie = getMovieRandomlyExcept(match.getAnswered());
+                match.setMovieA(newMovie);
+                match.addAnswered(newMovie.getId());
+            }
+            default -> throw new InvalidResultException();
+        }
+        return match;
     }
 }

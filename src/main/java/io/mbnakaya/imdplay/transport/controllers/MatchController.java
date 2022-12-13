@@ -1,6 +1,7 @@
 package io.mbnakaya.imdplay.transport.controllers;
 
 import io.mbnakaya.imdplay.domain.Match;
+import io.mbnakaya.imdplay.domain.Response;
 import io.mbnakaya.imdplay.interactors.port.MatchService;
 import io.mbnakaya.imdplay.transport.dto.MatchDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,12 @@ public class MatchController {
     public ResponseEntity<MatchDTO> startMatch(@RequestHeader(HttpHeaders.AUTHORIZATION) String authToken) {
         Match result = service.startMatch(authToken);
         return new ResponseEntity<>(MatchDTO.fromDomain(result), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<MatchDTO> respond(@PathVariable Long id, @RequestParam String response) {
+        Match result = service.processResponse(id, Response.valueOf(response));
+        return new ResponseEntity<>(MatchDTO.fromDomain(result), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
