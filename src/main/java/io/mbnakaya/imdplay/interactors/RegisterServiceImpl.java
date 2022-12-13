@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class RegisterServiceImpl implements RegisterService {
 
-    @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
+    private final AuthenticationService authenticationService;
 
-    @Autowired
-    private AuthenticationService authenticationService;
+    public RegisterServiceImpl(UserRepository repository, AuthenticationService authenticationService) {
+        this.repository = repository;
+        this.authenticationService = authenticationService;
+    }
 
     @Override
     public User registry(User user) {

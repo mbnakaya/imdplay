@@ -2,6 +2,7 @@ package io.mbnakaya.imdplay.helper
 
 import io.mbnakaya.imdplay.domain.Login
 import io.mbnakaya.imdplay.domain.Match
+import io.mbnakaya.imdplay.domain.MatchStatus
 import io.mbnakaya.imdplay.domain.Movie
 import io.mbnakaya.imdplay.domain.User
 
@@ -67,6 +68,54 @@ class TestLoader {
         match.setId(1L)
         match.setMovieA(generateMovieA())
         match.setMovieB(generateMovieB())
+
+        return match;
+    }
+
+    static List<Match> generateMatches() {
+        Match match = Match.generateNewOne(generatePersistedUser())
+        match.setId(1L)
+        match.setMovieA(generateMovieA())
+        match.setMovieB(generateMovieB())
+
+        return Arrays.asList(match)
+    }
+
+    static Match generateScoredMatch() {
+        Match match = Match.generateNewOne(generatePersistedUser())
+        match.setId(1L)
+        match.setMovieA(generateMovieA())
+        match.setMovieB(generateMovieB())
+        match.setPoints(10)
+
+        return match;
+    }
+
+    static Match generateFinishedMatch() {
+        Match match = Match.generateNewOne(generatePersistedUser())
+        match.setId(1L)
+        match.setStatus(MatchStatus.FINISHED)
+
+        return match;
+    }
+
+    static Match generateMatchWrightAnswer() {
+        Match match = Match.generateNewOne(generatePersistedUser())
+        match.setId(1L)
+        match.setMovieA(generateMovieA())
+        match.setMovieB(generateMovieB())
+        match.positiveResult()
+
+        return match;
+    }
+
+    static Match generateMatchWrongAnswer() {
+        Match match = Match.generateNewOne(generatePersistedUser())
+        match.setId(1L)
+        match.setMovieA(generateMovieA())
+        match.setMovieB(generateMovieB())
+        match.negativeResult()
+        match.reduceChance()
 
         return match;
     }
