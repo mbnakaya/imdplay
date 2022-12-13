@@ -20,13 +20,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User login(User user) {
-        return repositoryJpa
-                .findByUserNameAndPassword(user.getUserName(), user.getPassword())
-                .toDomain();
-    }
-
-    @Override
     public User login(String userName, String password) {
         try {
             return repositoryJpa

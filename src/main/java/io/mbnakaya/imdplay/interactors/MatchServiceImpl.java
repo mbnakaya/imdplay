@@ -18,17 +18,20 @@ import java.util.Random;
 @Service
 public class MatchServiceImpl implements MatchService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private MatchRepository matchRepository;
+    private final MatchRepository matchRepository;
 
-    @Autowired
-    private MovieRepository movieRepository;
+    private final MovieRepository movieRepository;
 
-    @Autowired
-    private AuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
+
+    public MatchServiceImpl(UserRepository userRepository, MatchRepository matchRepository, MovieRepository movieRepository, AuthenticationService authenticationService) {
+        this.userRepository = userRepository;
+        this.matchRepository = matchRepository;
+        this.movieRepository = movieRepository;
+        this.authenticationService = authenticationService;
+    }
 
     @Override
     public Match startMatch(String authToken) {

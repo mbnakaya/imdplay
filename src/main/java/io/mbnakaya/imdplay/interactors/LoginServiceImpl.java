@@ -12,12 +12,15 @@ import java.util.Base64;
 @Service
 public class LoginServiceImpl implements LoginService {
 
-    @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
+
+    public LoginServiceImpl(UserRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Login authenticate(Login login) {
-        User user = repository.login(login.getUser());
+        User user = repository.login(login.getUser().getUserName(), login.getUser().getPassword());
         return Login.builder()
                 .user(user)
                 .authToken(generateBasicAuth(user.getUserName(), user.getPassword()))
