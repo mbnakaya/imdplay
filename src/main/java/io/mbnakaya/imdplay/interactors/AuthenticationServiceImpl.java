@@ -3,7 +3,6 @@ package io.mbnakaya.imdplay.interactors;
 import io.mbnakaya.imdplay.datasource.port.UserRepository;
 import io.mbnakaya.imdplay.domain.User;
 import io.mbnakaya.imdplay.interactors.port.AuthenticationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
@@ -13,8 +12,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
 
-    public AuthenticationServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AuthenticationServiceImpl(UserRepository bean) {
+        this.userRepository = bean;
     }
 
     @Override

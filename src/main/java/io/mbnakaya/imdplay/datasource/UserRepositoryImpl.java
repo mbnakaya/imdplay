@@ -8,6 +8,8 @@ import io.mbnakaya.imdplay.domain.exceptions.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class UserRepositoryImpl implements UserRepository {
 
@@ -35,5 +37,10 @@ public class UserRepositoryImpl implements UserRepository {
         return repositoryJpa
                 .findByUserName(userName)
                 .toDomain();
+    }
+
+    @Override
+    public List<User> getRanking(Integer top) {
+        return repositoryJpa.getRanking(top).stream().map(UserPO::toDomain).toList();
     }
 }

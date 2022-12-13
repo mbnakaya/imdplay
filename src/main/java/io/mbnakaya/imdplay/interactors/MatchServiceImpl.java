@@ -26,11 +26,11 @@ public class MatchServiceImpl implements MatchService {
 
     private final AuthenticationService authenticationService;
 
-    public MatchServiceImpl(UserRepository userRepository, MatchRepository matchRepository, MovieRepository movieRepository, AuthenticationService authenticationService) {
-        this.userRepository = userRepository;
-        this.matchRepository = matchRepository;
-        this.movieRepository = movieRepository;
-        this.authenticationService = authenticationService;
+    public MatchServiceImpl(UserRepository userRepositoryBean, MatchRepository matchRepositoryBean, MovieRepository movieRepositoryBean, AuthenticationService authenticationServiceBean) {
+        this.userRepository = userRepositoryBean;
+        this.matchRepository = matchRepositoryBean;
+        this.movieRepository = movieRepositoryBean;
+        this.authenticationService = authenticationServiceBean;
     }
 
     @Override

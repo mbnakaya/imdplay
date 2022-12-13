@@ -14,8 +14,8 @@ public class LoginServiceImpl implements LoginService {
 
     private final UserRepository repository;
 
-    public LoginServiceImpl(UserRepository repository) {
-        this.repository = repository;
+    public LoginServiceImpl(UserRepository bean) {
+        this.repository = bean;
     }
 
     @Override

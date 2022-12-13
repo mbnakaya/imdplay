@@ -13,9 +13,9 @@ public class RegisterServiceImpl implements RegisterService {
     private final UserRepository repository;
     private final AuthenticationService authenticationService;
 
-    public RegisterServiceImpl(UserRepository repository, AuthenticationService authenticationService) {
-        this.repository = repository;
-        this.authenticationService = authenticationService;
+    public RegisterServiceImpl(UserRepository repositoryBean, AuthenticationService authenticationServiceBean) {
+        this.repository = repositoryBean;
+        this.authenticationService = authenticationServiceBean;
     }
 
     @Override
