@@ -35,11 +35,11 @@ docker-compose up
 
 Now, it's time to build and launch the project using the `Dockerfile`:
 ```bash
-docker build .
+docker build -t imdplay .
 ```
 
 ```bash
-docker run .
+docker run -p 8080:8080 imdplay
 ```
 
 ### API
@@ -86,3 +86,7 @@ PATCH `[host]`/v1/match/{ID} (Authentication Required)
 GET `[host]`/v1/ranking (Authentication Required)
 
 > :warning: All requests annotated with `(Authentication Required)` must be authenticated using Basic Auth (based in user/password).
+
+### OpenAPI
+To get more details, check the OpenAPI documentation:
+[host]`/v3/api-docs
