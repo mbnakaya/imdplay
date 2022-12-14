@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/login")
 public class LoginController {
 
-    @Autowired
-    private LoginService service;
+    private final LoginService service;
+
+    public LoginController(LoginService bean) {
+        this.service = bean;
+    }
 
     @PostMapping
     public ResponseEntity<ResponseLoginDTO> login(@RequestBody LoginDTO body) {

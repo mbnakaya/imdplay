@@ -16,8 +16,11 @@ import java.util.List;
 @RequestMapping("/v1/match")
 public class MatchController {
 
-    @Autowired
-    private MatchService service;
+    private final MatchService service;
+
+    public MatchController(MatchService bean) {
+        this.service = bean;
+    }
 
     @PostMapping
     public ResponseEntity<MatchDTO> startMatch(@RequestHeader(HttpHeaders.AUTHORIZATION) String authToken) {

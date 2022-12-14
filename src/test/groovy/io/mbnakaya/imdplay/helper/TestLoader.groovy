@@ -6,6 +6,7 @@ import io.mbnakaya.imdplay.domain.Match
 import io.mbnakaya.imdplay.domain.MatchStatus
 import io.mbnakaya.imdplay.domain.Movie
 import io.mbnakaya.imdplay.domain.User
+import io.mbnakaya.imdplay.transport.dto.CreateUserDTO
 
 class TestLoader {
 
@@ -96,6 +97,8 @@ class TestLoader {
         Match match = Match.generateNewOne(generatePersistedUser())
         match.setId(1L)
         match.setStatus(MatchStatus.FINISHED)
+        match.setMovieA(Movie.builder().id(null).build())
+        match.setMovieB(Movie.builder().id(null).build())
 
         return match;
     }
@@ -107,7 +110,7 @@ class TestLoader {
         match.setMovieB(generateMovieB())
         match.positiveResult()
 
-        return match;
+        return match
     }
 
     static Match generateMatchWrongAnswer() {
@@ -123,5 +126,15 @@ class TestLoader {
 
     static MatchPO generateMatchPO() {
         return MatchPO.toPO(generateMatch())
+    }
+
+    static CreateUserDTO generateCreateUser() {
+        def dto = new CreateUserDTO()
+        dto.setFullName("Test")
+        dto.setUsername("test")
+        dto.setPassword("1234")
+        dto.setEmail("test@mail.com")
+
+        return dto
     }
 }

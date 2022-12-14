@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/register")
 public class RegisterController {
 
-    @Autowired
-    private RegisterService service;
+    private final RegisterService service;
+
+    public RegisterController(RegisterService bean) {
+        this.service = bean;
+    }
 
     @PostMapping
     @FreeRoute
