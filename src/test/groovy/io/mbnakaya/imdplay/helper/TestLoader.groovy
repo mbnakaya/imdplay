@@ -1,5 +1,6 @@
 package io.mbnakaya.imdplay.helper
 
+import io.mbnakaya.imdplay.datasource.po.MatchPO
 import io.mbnakaya.imdplay.domain.Login
 import io.mbnakaya.imdplay.domain.Match
 import io.mbnakaya.imdplay.domain.MatchStatus
@@ -118,5 +119,9 @@ class TestLoader {
         match.reduceChance()
 
         return match;
+    }
+
+    static MatchPO generateMatchPO() {
+        return MatchPO.toPO(generateMatch())
     }
 }

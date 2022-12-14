@@ -17,8 +17,11 @@ import java.util.Optional;
 @Component
 public class MatchRepositoryImpl implements MatchRepository {
 
-    @Autowired
-    private MatchRepositoryJpa repositoryJpa;
+    private final MatchRepositoryJpa repositoryJpa;
+
+    public MatchRepositoryImpl(MatchRepositoryJpa bean) {
+        this.repositoryJpa = bean;
+    }
 
     @Override
     public Match save(Match match) {

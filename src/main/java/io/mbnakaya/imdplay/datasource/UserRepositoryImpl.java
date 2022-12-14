@@ -13,8 +13,11 @@ import java.util.List;
 @Component
 public class UserRepositoryImpl implements UserRepository {
 
-    @Autowired
-    private UserRepositoryJpa repositoryJpa;
+    private final UserRepositoryJpa repositoryJpa;
+
+    public UserRepositoryImpl(UserRepositoryJpa bean) {
+        this.repositoryJpa = bean;
+    }
 
     @Override
     public User save(User user) {
