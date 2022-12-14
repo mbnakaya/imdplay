@@ -89,4 +89,4 @@ GET `[host]`/v1/ranking (Authentication Required)
 
 ### OpenAPI
 To get more details, check the OpenAPI documentation:
-[host]`/v3/api-docs
+`[host]`/v3/api-docs
